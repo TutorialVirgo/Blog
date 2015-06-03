@@ -2,7 +2,7 @@
 
 require_once '../vendor/autoload.php';
 
-use Virgo\Tutorial\Controller\DefaultController;
+use Virgo\Tutorial\Controller\RegistrationController;
 use Virgo\Tutorial\Router\SimpleRouter;
 use Symfony\Component\HttpFoundation\Request;
 

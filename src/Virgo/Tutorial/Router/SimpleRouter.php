@@ -3,6 +3,7 @@
 namespace Virgo\Tutorial\Router;
 
 use Virgo\Tutorial\Controller\DefaultController;
+use Virgo\Tutorial\Controller\RegistrationController;
 
 class SimpleRouter
 {
@@ -15,17 +16,14 @@ class SimpleRouter
     {
         switch ($route) {
             case "/" : {
-                //$response->setContent(file_get_contents(__DIR__ . '/../src/Virgo/Tutorial/Resources/Views/index.html'));
                 return [new DefaultController(), 'indexAction'];
                 break;
             }
             case "/registration" : {
-                // $controller->setContent(__DIR__ . '/../src/Virgo/Tutorial/Resources/Views/registration.html');
-                throw new \Exception("NIY");
+                return [new RegistrationController(), 'registrationAction'];
                 break;
             }
             default : {
-                // $controller->setContent('Not Found');
                 throw new \Exception("NIY");
                 break;
             }
