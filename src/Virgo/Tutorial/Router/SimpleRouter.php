@@ -14,7 +14,7 @@ class SimpleRouter
                 echo 'Index';
                 break;
             }
-            case "registration.php" : {
+            case "/registration" : {
                 echo 'Registration';
                 break;
             }
