@@ -2,32 +2,38 @@
 
 namespace Virgo\Tutorial\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 class AbstractEntity
 {
     /**
      * @var integer
+     * @ORM\Column(type="integer", unique="true")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=false)
      */
     protected $createdDate;
 
     /**
      * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=false)
      */
-
     protected $modifiedDate;
 
     /**
      * @var string
+     * @ORM\Column(type="string", nullable=false)
      */
     protected $status;
 
-
-
-    public function __construct(){
+    public function __construct()
+    {
         $this->createdDate = new \Datetime;
         $this->modifiedDate = new \Datetime;
     }
@@ -79,6 +85,4 @@ class AbstractEntity
     {
         $this->status = $status;
     }
-
-
 }

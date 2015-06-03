@@ -2,20 +2,29 @@
 
 namespace Virgo\Tutorial\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="Users")
+ **/
 class User extends AbstractEntity
 {
     /**
      * @var string
+     * @ORM\Column(type="string", nullable=false)
      */
     protected $name;
 
     /**
      * @var string
+     * @ORM\Column(type="string", nullable=false)
      */
     protected $email;
 
     /**
      * @var string
+     * @ORM\Column(type="string", nullable=false)
      */
     protected $password;
 
