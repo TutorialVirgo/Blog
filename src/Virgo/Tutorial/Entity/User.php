@@ -2,29 +2,27 @@
 
 namespace Virgo\Tutorial\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
- * @ORM\Entity
- * @ORM\Table(name="Users")
+ * @Table(name="users")
+ * @Entity
  **/
 class User extends AbstractEntity
 {
     /**
+     * @Column(type="string", nullable=false)
      * @var string
-     * @ORM\Column(type="string", nullable=false)
      */
     protected $name;
 
     /**
+     * @Column(type="string", nullable=false)
      * @var string
-     * @ORM\Column(type="string", nullable=false)
      */
     protected $email;
 
     /**
+     * @Column(type="string", nullable=false)
      * @var string
-     * @ORM\Column(type="string", nullable=false)
      */
     protected $password;
 
@@ -97,12 +95,11 @@ class User extends AbstractEntity
     private function generateSalt()
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $randstring = '';
+        $randomString = '';
         for ($i = 0; $i < 10; $i++) {
-            $randstring = $characters[rand(0, strlen($characters))];
+            $randomString = $characters[rand(0, strlen($characters))];
         }
 
-        $this->salt = $randstring;
+        $this->salt = $randomString;
     }
-
 }
