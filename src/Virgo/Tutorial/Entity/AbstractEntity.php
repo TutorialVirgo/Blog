@@ -26,7 +26,7 @@ class AbstractEntity
     protected $modifiedDate;
 
     /**
-     * @Column(type="string", nullable=false)
+     * @Column(type="string", length=8 ,nullable=false)
      * @var string
      */
     protected $status;

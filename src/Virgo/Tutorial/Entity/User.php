@@ -9,19 +9,19 @@ namespace Virgo\Tutorial\Entity;
 class User extends AbstractEntity
 {
     /**
-     * @Column(type="string", nullable=false)
+     * @Column(type="string", length=64, nullable=false)
      * @var string
      */
     protected $name;
 
     /**
-     * @Column(type="string", nullable=false)
+     * @Column(type="string", length=128 ,nullable=false)
      * @var string
      */
     protected $email;
 
     /**
-     * @Column(type="string", nullable=false)
+     * @Column(type="string", length=40 ,nullable=false)
      * @var string
      */
     protected $password;
