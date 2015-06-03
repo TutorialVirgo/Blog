@@ -3,9 +3,13 @@
 require_once '../vendor/autoload.php';
 
 use Virgo\Tutorial\Router\SimpleRouter;
+use Symfony\Component\HttpFoundation\Request;
 
-$requestURI = explode('/', $_SERVER['REQUEST_URI']);
-var_dump($requestURI);
+$request = Request::createFromGlobals();
+
 $router = new SimpleRouter();
+$router->getRoute($request->getPathInfo());
 
-$router->getRoute($requestURI);
+// controller
+// response = controller($request)
+// response->send()

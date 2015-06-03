@@ -10,11 +10,17 @@ class SimpleRouter
     public function getRoute($route)
     {
         switch ($route) {
-            case "registration" : {
-                echo 'apad';
+            case "/" : {
+                echo 'Index';
+                break;
+            }
+            case "registration.php" : {
+                echo 'Registration';
+                break;
             }
             default : {
-                echo 'def';
+                echo 'Default';
+                break;
             }
         }
     }
