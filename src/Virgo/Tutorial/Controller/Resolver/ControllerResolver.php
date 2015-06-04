@@ -3,6 +3,7 @@
 namespace Virgo\Tutorial\Controller\Resolver;
 
 use Virgo\Tutorial\Controller\DefaultController;
+use Virgo\Tutorial\Controller\Factory\ControllerFactory;
 use Virgo\Tutorial\Controller\RegistrationController;
 
 class ControllerResolver
@@ -18,8 +19,8 @@ class ControllerResolver
         }
 
         list($className, $method) = explode('::', $result);
-        $className = 'Virgo\Tutorial\Controller\\' . $className;
-
+        $controllerFactory = new ControllerFactory();
+        $controllerFactory->factory($className);
 
         if( !class_exists($className)){
             throw new \InvalidArgumentException;

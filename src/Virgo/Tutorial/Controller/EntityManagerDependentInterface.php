@@ -1,6 +1,6 @@
 <?php
 
-namespace Virgo\Tutorial\Manager;
+namespace Virgo\Tutorial\Controller;
 
 use Doctrine\ORM\EntityManager;
 

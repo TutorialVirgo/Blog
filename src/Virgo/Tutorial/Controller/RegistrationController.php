@@ -2,11 +2,25 @@
 
 namespace Virgo\Tutorial\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class RegistrationController extends Controller
+class RegistrationController extends Controller implements EntityManagerDependentInterface
 {
+    /**
+     * @var EntityManager $em
+     */
+    private $em;
+
+    /**
+     * @param EntityManager $em
+     */
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * @param Request $request
      * @return Response
