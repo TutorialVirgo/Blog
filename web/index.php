@@ -7,17 +7,11 @@ use Symfony\Component\Routing\Loader\YamlFileLoader;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Router;
 use Virgo\Tutorial\Controller\RegistrationController;
+use Virgo\Tutorial\Controller\Resolver\ControllerResolver;
 use Virgo\Tutorial\Router\SimpleRouter;
 use Symfony\Component\HttpFoundation\Request;
 
 $request = Request::createFromGlobals();
-/*
-$router = new SimpleRouter();
-$controller = $router->getController($request->getPathInfo());
-$response = call_user_func_array($controller, [$request]);
-$response->send();
-*/
-
 $locator = new FileLocator([dirname(__DIR__) . '/src/Virgo/Tutorial/Resources/Routing']);
 $requestContext = new RequestContext($_SERVER['REQUEST_URI']);
 
@@ -32,5 +26,6 @@ $router = new Router(
 
 //var_dump($request->getPathInfo());
 $result = $router->match($request->getPathInfo());
-
-var_dump($result);
+$controller = (new ControllerResolver())->resolve($result["_controller"]);
+$response = call_user_func_array($controller, [$request]);
+$response->send();

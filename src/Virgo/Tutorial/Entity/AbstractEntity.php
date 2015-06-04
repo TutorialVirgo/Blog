@@ -3,7 +3,7 @@
 namespace Virgo\Tutorial\Entity;
 
 /** @MappedSuperclass */
-class AbstractEntity
+abstract class AbstractEntity
 {
     /**
      * @Column(type="integer")
