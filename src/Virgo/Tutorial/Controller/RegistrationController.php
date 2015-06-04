@@ -20,7 +20,7 @@ class RegistrationController extends Controller
             if (empty($variables)) {
                 return $this->renderResponse("success", $variables);
             } else {
-                echo  "Errors: <br>";
+                echo "Errors: <br>";
                 foreach ($variables as $error) {
                     echo $error . '<br>';
                 }
@@ -47,7 +47,7 @@ class RegistrationController extends Controller
 
         $this->checkName($name, $errors);
         $this->checkPassword($password, $errors);
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             array_push($errors, "E-mail is invalid!");
         }
 
