@@ -1,3 +1,3 @@
 <a href="/registration">Register</a>
 <?php
-echo '<br>hello', $foo;
+echo '<br>Hello ', $user;

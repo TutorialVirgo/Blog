@@ -13,6 +13,6 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return $this->renderResponse("index", ["foo" => "bar"]);
+        return $this->renderResponse("index", ["user" => $request->get('name', 'World')]);
     }
 }
