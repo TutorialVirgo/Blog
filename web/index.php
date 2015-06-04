@@ -18,8 +18,10 @@ $response = call_user_func_array($controller, [$request]);
 $response->send();
 */
 
-$locator = new FileLocator([__DIR__ . '/Virgo/Tutorial/Resources/Routing/']);
+$locator = new FileLocator([dirname(__DIR__) . '/src/Virgo/Tutorial/Resources/Routing']);
 $requestContext = new RequestContext($_SERVER['REQUEST_URI']);
+
+var_dump($locator);
 
 $router = new Router(
     new YamlFileLoader($locator),
