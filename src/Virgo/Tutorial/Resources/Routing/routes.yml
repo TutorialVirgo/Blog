@@ -1,7 +1,7 @@
 index:
     path:     /
-    defaults: { _controller: 'DefaultController::indexAction' }
+    defaults: { _controller: DefaultController::indexAction }
 
 registration:
     path:     /registration
-    defaults: { _controller: 'RegistrationController::registrationAction' }
+    defaults: { _controller: RegistrationController::registrationAction }

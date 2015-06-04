@@ -21,7 +21,7 @@ $response->send();
 $locator = new FileLocator([dirname(__DIR__) . '/src/Virgo/Tutorial/Resources/Routing']);
 $requestContext = new RequestContext($_SERVER['REQUEST_URI']);
 
-var_dump($locator);
+//var_dump($locator);
 
 $router = new Router(
     new YamlFileLoader($locator),
@@ -29,4 +29,8 @@ $router = new Router(
     ['cache_dir' => __DIR__ . '/cache'],
     $requestContext
 );
-$router->match($request->getPathInfo());
+
+//var_dump($request->getPathInfo());
+$result = $router->match($request->getPathInfo());
+
+var_dump($result);
