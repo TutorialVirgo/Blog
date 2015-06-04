@@ -7,6 +7,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
+<?php
+
+echo "Errors: <br>";
+foreach ($variables as $error) {
+    echo $error . '<br>';
+}
+echo "<br>";
+?>
 Registration<br><br>
 <form method="POST">
     <label for="name">Name: </label><br>

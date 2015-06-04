@@ -20,11 +20,7 @@ class RegistrationController extends Controller
             if (empty($variables)) {
                 return $this->renderResponse("success", $variables);
             } else {
-                echo "Errors: <br>";
-                foreach ($variables as $error) {
-                    echo $error . '<br>';
-                }
-                echo "<br>";
+
 
                 return $this->renderResponse("registration", $variables);
             }
