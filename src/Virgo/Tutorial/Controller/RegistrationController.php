@@ -5,6 +5,7 @@ namespace Virgo\Tutorial\Controller;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Virgo\Tutorial\Entity\User;
 
 class RegistrationController extends Controller implements EntityManagerDependentInterface
 {
@@ -27,25 +28,25 @@ class RegistrationController extends Controller implements EntityManagerDependen
      */
     public function registrationAction(Request $request)
     {
-        $variables = [];
+        $errors = [];
         if ($request->isMethod(Request::METHOD_POST)) {
 
-            $variables = $this->handleRegistration($request);
-            if (empty($variables)) {
-                new User($request->request->get('name'),
-                $request->request->get('password'),
-                $request->request->get('email'));
+            $errors = $this->handleRegistration($request);
+            if (empty($errors)) {
+                $user = new User($request->request->get('name'),
+                    $request->request->get('password'),
+                    $request->request->get('email'));
 
+                $this->em->persist($user);
+                $this->em->flush();
 
-                return $this->renderResponse("success", $variables);
+                return $this->renderResponse("success", $errors);
             } else {
-
-
-                return $this->renderResponse("registration", $variables);
+                return $this->renderResponse("registration", $errors);
             }
         }
 
-        return $this->renderResponse("registration", $variables);
+        return $this->renderResponse("registration", $errors);
     }
 
     /**
