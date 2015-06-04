@@ -32,8 +32,8 @@ class RegistrationController extends Controller implements EntityManagerDependen
 
             $variables = $this->handleRegistration($request);
             if (empty($variables)) {
-                new User($request->request->get('name');
-                $request->request->get('password');
+                new User($request->request->get('name'),
+                $request->request->get('password'),
                 $request->request->get('email'));
 
 
