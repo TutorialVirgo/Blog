@@ -4,6 +4,7 @@ namespace Virgo\Tutorial\Controller\Factory;
 
 
 use Doctrine\ORM\EntityManager;
+use Virgo\Tutorial\Controller\EntityManagerDependentInterface;
 
 class ControllerFactory
 {
@@ -15,7 +16,8 @@ class ControllerFactory
     /**
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em){
+    public function __construct(EntityManager $em)
+    {
         $this->em = $em;
     }
 
@@ -23,16 +25,18 @@ class ControllerFactory
      * @param string $className
      * @return object
      */
-    public function factory($className){
-
+    public function factory($className)
+    {
         $className = 'Virgo\Tutorial\Controller\\' . $className;
 
-
-        if( !class_exists($className)){
+        if (!class_exists($className)) {
             throw new \InvalidArgumentException;
         } else {
+            if (in_array(EntityManagerDependentInterface::class, (class_implements($className)))) {
+                return new $className($this->em);
+            }
+
             return new $className;
         }
     }
-
 }

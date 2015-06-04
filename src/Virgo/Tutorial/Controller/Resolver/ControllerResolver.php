@@ -2,6 +2,7 @@
 
 namespace Virgo\Tutorial\Controller\Resolver;
 
+use Doctrine\ORM\EntityManager;
 use Virgo\Tutorial\Controller\DefaultController;
 use Virgo\Tutorial\Controller\Factory\ControllerFactory;
 use Virgo\Tutorial\Controller\RegistrationController;
@@ -9,23 +10,20 @@ use Virgo\Tutorial\Controller\RegistrationController;
 class ControllerResolver
 {
     /**
-     * @param string $result
+     * @param string         $result
+     * @param  EntityManager $em
      * @return DefaultController|RegistrationController
      */
-    public function resolve($result)
+    public function resolve($result, $em)
     {
         if (!is_string($result)) {
             throw new \InvalidArgumentException;
         }
 
         list($className, $method) = explode('::', $result);
-        $controllerFactory = new ControllerFactory();
-        $controllerFactory->factory($className);
+        $controllerFactory = new ControllerFactory($em);
+        $controller = $controllerFactory->factory($className);
 
-        if( !class_exists($className)){
-            throw new \InvalidArgumentException;
-        }
-
-        return [new $className, $method];
+        return [$controller, $method];
     }
 }

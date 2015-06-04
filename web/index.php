@@ -1,6 +1,7 @@
 <?php
 
 require_once '../vendor/autoload.php';
+require_once '../bootstrap.php';
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
@@ -20,7 +21,8 @@ $router = new Router(
     $requestContext
 );
 
+
 $result = $router->match($request->getPathInfo());
-$controller = (new ControllerResolver())->resolve($result["_controller"]);
+$controller = (new ControllerResolver())->resolve($result["_controller"], $entityManager);
 $response = call_user_func_array($controller, [$request]);
 $response->send();
