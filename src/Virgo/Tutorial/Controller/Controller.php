@@ -8,7 +8,7 @@ class Controller
 {
     /**
      * @param string $view
-     * @param array  $variables
+     * @param array $variables
      * @return string
      */
     protected function render($view, array $variables = [])
@@ -23,7 +23,7 @@ class Controller
 
     /**
      * @param string $view
-     * @param array  $variables
+     * @param array $variables
      * @return Response
      */
     protected function renderResponse($view, array $variables = [])

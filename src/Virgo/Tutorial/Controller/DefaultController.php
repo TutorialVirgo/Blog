@@ -2,11 +2,25 @@
 
 namespace Virgo\Tutorial\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class DefaultController extends Controller
+class DefaultController extends Controller implements EntityManagerDependentInterface
 {
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
+     * @param EntityManager $entityManager
+     */
+    public function __construct(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @param Request $request
      * @return Response
@@ -32,6 +46,7 @@ class DefaultController extends Controller
     private function isValid(Request $request)
     {
         $errors = [];
+        //$this->entityManager->findByEmail();
 
         return $errors;
     }

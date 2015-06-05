@@ -72,7 +72,7 @@ class RegistrationController extends Controller implements EntityManagerDependen
     }
 
     /**
-     * @param string   $pwd
+     * @param string $pwd
      * @param string[] $errors
      */
     private function checkPassword($pwd, array &$errors)
@@ -91,7 +91,7 @@ class RegistrationController extends Controller implements EntityManagerDependen
     }
 
     /**
-     * @param string   $name
+     * @param string $name
      * @param string[] $errors
      */
     private function checkName($name, array &$errors)
