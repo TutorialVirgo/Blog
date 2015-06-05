@@ -3,7 +3,6 @@
 namespace Virgo\Tutorial\Controller;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Virgo\Tutorial\Entity\User;
@@ -35,8 +34,8 @@ class RegistrationController extends Controller implements EntityManagerDependen
             $errors = $this->handleRegistration($request);
             if (empty($errors)) {
                 $user = new User($request->request->get('name'),
-                    $request->request->get('password'),
-                    $request->request->get('email'));
+                    $request->request->get('email'),
+                    $request->request->get('password'));;
                 $user->setStatus("active");
 
                 $this->em->persist($user);
@@ -79,7 +78,7 @@ class RegistrationController extends Controller implements EntityManagerDependen
     private function checkPassword($pwd, array &$errors)
     {
         if (strlen($pwd) < 8) {
-            array_push($errors, "Name is too short!");
+            array_push($errors, "Password is too short!");
         }
 
         if (!preg_match("#[0-9]+#", $pwd)) {
