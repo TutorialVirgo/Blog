@@ -37,18 +37,10 @@ class RegistrationController extends Controller implements EntityManagerDependen
                 $user = new User($request->request->get('name'),
                     $request->request->get('password'),
                     $request->request->get('email'));
+                $user->setStatus("active");
 
-                echo 'Persisting...' . PHP_EOL;
                 $this->em->persist($user);
-
-                echo 'Flushing...' . PHP_EOL;
-                try {
-                    $this->em->flush();
-                } catch (Exception $e) {
-                    echo $e->getMessage();
-                }
-
-                echo 'Done!';
+                $this->em->flush();
 
                 return $this->renderResponse("success", $errors);
             } else {
