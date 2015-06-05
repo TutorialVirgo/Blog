@@ -15,7 +15,7 @@ class User extends AbstractEntity
     protected $name;
 
     /**
-     * @Column(type="string", length=128 ,nullable=false, unique=true)
+     * @Column(type="string", length=256 ,nullable=false, unique=true)
      * @var string
      */
     protected $email;
@@ -27,6 +27,7 @@ class User extends AbstractEntity
     protected $password;
 
     /**
+     * @Column(type="string", length=60 ,nullable=false)
      * @var string
      */
     protected $salt;
@@ -92,7 +93,7 @@ class User extends AbstractEntity
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
         for ($i = 0; $i < 10; $i++) {
-            $randomString = $characters[rand(0, strlen($characters) - 1)];
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
         }
 
         $this->salt = $randomString;

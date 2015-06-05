@@ -14,4 +14,12 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(strlen($user->getPassword()) == 60);
     }
+
+    public function testSalt()
+    {
+        $user = new User();
+        $user->generateSalt();
+
+        $this->assertTrue(strlen($user->getSalt()) == 10);
+    }
 }
