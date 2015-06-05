@@ -13,6 +13,26 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-       return $this->renderResponse("index", ["user" => $request->get('name', 'World')]);
+        if ($request->isMethod(Request::METHOD_POST)) {
+            $errors = $this->isValid($request);
+            if (empty($errors)) {
+                return $this->renderResponse("home", ["user" => $request->request->get('name', 'Unknown')]);
+            }
+
+            return $this->renderResponse("index", ["user" => $request->get('name', 'World'), "errors" => $errors]);
+        }
+
+        return $this->renderResponse("index", ["user" => $request->get('name', 'World')]);
+    }
+
+    /**
+     * @param Request $request
+     * @return string[]
+     */
+    private function isValid(Request $request)
+    {
+        $errors = [];
+
+        return $errors;
     }
 }

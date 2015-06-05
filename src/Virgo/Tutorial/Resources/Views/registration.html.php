@@ -7,15 +7,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
-<?php
 
-echo "Errors: <br>";
-foreach ($variables as $error) {
-    echo $error . '<br>';
-}
-echo "<br>";
-?>
 Registration<br><br>
+
 <form method="POST">
     <label for="name">Name: </label><br>
     <input id="name" type="text" name="name"><br>
@@ -25,5 +19,17 @@ Registration<br><br>
     <input id="email" type="text" name="email"><br>
     <input type="submit" name="registrate" value="Send">
 </form>
+<?php
+
+echo '<br>';
+if (!empty($variables)) {
+    echo 'Errors: <br><div style="color:#FF0000;">';
+    foreach ($variables as $error) {
+        echo $error . '<br>';
+    }
+    echo '</div>';
+}
+?>
+
 </body>
 </html>

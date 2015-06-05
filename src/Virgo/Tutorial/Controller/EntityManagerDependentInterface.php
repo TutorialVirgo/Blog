@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 interface EntityManagerDependentInterface
 {
     /**
-     * @param EntityManager $em
+     * @param EntityManager $entityManager
      */
-    public function __construct(EntityManager $em);
+    public function __construct(EntityManager $entityManager);
 }

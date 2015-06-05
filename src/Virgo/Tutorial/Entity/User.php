@@ -15,7 +15,7 @@ class User extends AbstractEntity
     protected $name;
 
     /**
-     * @Column(type="string", length=128 ,nullable=false)
+     * @Column(type="string", length=128 ,nullable=false, unique=true)
      * @var string
      */
     protected $email;
@@ -30,19 +30,6 @@ class User extends AbstractEntity
      * @var string
      */
     protected $salt;
-
-    /**
-     * @param string $name
-     * @param string $email
-     * @param string $password
-     */
-    public function __construct($name, $email, $password)
-    {
-        parent::__construct();
-        $this->name = $name;
-        $this->email = $email;
-        $this->password = $password;
-    }
 
     /**
      * @return string
@@ -89,15 +76,23 @@ class User extends AbstractEntity
      */
     public function setPassword($password)
     {
-        $this->password = $password;
+        $this->password = password_hash($password . $this->salt, PASSWORD_BCRYPT);
     }
 
-    private function generateSalt()
+    /**
+     * @return string
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    public function generateSalt()
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
         for ($i = 0; $i < 10; $i++) {
-            $randomString = $characters[rand(0, strlen($characters))];
+            $randomString = $characters[rand(0, strlen($characters) - 1)];
         }
 
         $this->salt = $randomString;

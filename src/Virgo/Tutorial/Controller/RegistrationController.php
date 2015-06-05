@@ -15,11 +15,11 @@ class RegistrationController extends Controller implements EntityManagerDependen
     private $em;
 
     /**
-     * @param EntityManager $em
+     * @param EntityManager $entityManager
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->em = $em;
+        $this->em = $entityManager;
     }
 
     /**
@@ -33,17 +33,17 @@ class RegistrationController extends Controller implements EntityManagerDependen
 
             $errors = $this->handleRegistration($request);
             if (empty($errors)) {
-                $user = new User($request->request->get('name'),
-                    $request->request->get('email'),
-                    $request->request->get('password'));;
+                $user = new User();
+                $user->setName($request->request->get('name'));
+                $user->setEmail($request->request->get('email'));
+                $user->setPassword($request->request->get('password'));
+                $user->generateSalt();
                 $user->setStatus("active");
 
                 $this->em->persist($user);
                 $this->em->flush();
 
                 return $this->renderResponse("success", $errors);
-            } else {
-                return $this->renderResponse("registration", $errors);
             }
         }
 

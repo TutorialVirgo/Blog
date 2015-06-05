@@ -21,7 +21,6 @@ $router = new Router(
     $requestContext
 );
 
-
 $result = $router->match($request->getPathInfo());
 $controller = (new ControllerResolver())->resolve($result["_controller"], $entityManager);
 $response = call_user_func_array($controller, [$request]);
