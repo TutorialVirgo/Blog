@@ -3,6 +3,7 @@
 namespace Virgo\Tutorial\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Virgo\Tutorial\Entity\User;
@@ -37,8 +38,17 @@ class RegistrationController extends Controller implements EntityManagerDependen
                     $request->request->get('password'),
                     $request->request->get('email'));
 
+                echo 'Persisting...' . PHP_EOL;
                 $this->em->persist($user);
-                $this->em->flush();
+
+                echo 'Flushing...' . PHP_EOL;
+                try {
+                    $this->em->flush();
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                }
+
+                echo 'Done!';
 
                 return $this->renderResponse("success", $errors);
             } else {

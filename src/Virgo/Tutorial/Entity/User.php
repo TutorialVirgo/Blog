@@ -3,7 +3,7 @@
 namespace Virgo\Tutorial\Entity;
 
 /**
- * @Table(name="users")
+ * @Table(name="user")
  * @Entity
  **/
 class User extends AbstractEntity
