@@ -4,7 +4,7 @@ namespace Virgo\Tutorial\Entity;
 
 /**
  * @Table(name="user")
- * @Entity
+ * @Entity(repositoryClass="Virgo\Tutorial\Repository\UserRepository")
  **/
 class User extends AbstractEntity
 {

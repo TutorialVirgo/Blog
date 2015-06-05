@@ -5,6 +5,8 @@ namespace Virgo\Tutorial\Controller;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Virgo\Tutorial\Entity\User;
+use Virgo\Tutorial\Repository\UserRepository;
 
 class DefaultController extends Controller implements EntityManagerDependentInterface
 {
@@ -46,7 +48,20 @@ class DefaultController extends Controller implements EntityManagerDependentInte
     private function isValid(Request $request)
     {
         $errors = [];
-        //$this->entityManager->findByEmail();
+        $repository = $this->entityManager->getRepository(User::class);
+        /** @var UserRepository $repository */
+        $user = $repository->findByEmail($request->request->get('email'));
+        $enteredPassword = password_hash($request->request->get('password') . $user->getSalt(), PASSWORD_BCRYPT);
+        /**@var User $user */
+
+        if ($enteredPassword === $user->getPassword()) {
+            echo ' EZAZ BAZDMEG ELTALALTAD';
+        } else {
+            echo ' NEM NYERT KOCSOG';
+            print_r($enteredPassword);
+            echo PHP_EOL;
+            print_r($user->getPassword());
+        }
 
         return $errors;
     }

@@ -2,6 +2,7 @@
 
 namespace Virgo\Tutorial\Test\Controller\Resolver;
 
+use Doctrine\ORM\EntityManager;
 use Virgo\Tutorial\Controller\DefaultController;
 use Virgo\Tutorial\Controller\RegistrationController;
 use Virgo\Tutorial\Controller\Resolver\ControllerResolver;
@@ -15,7 +16,7 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveIsCallable()
     {
-        $this->assertTrue(is_callable($this->getResolverInstance()->resolve("DefaultController::indexAction")));
+        $this->assertTrue(is_callable($this->getResolverInstance()->resolve("DefaultController::indexAction",$this->mockEntityManager())));
     }
 
     /**
@@ -23,7 +24,7 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveIndexAction($expected, $controllerString)
     {
-        $resolvedController = $this->getResolverInstance()->resolve($controllerString);
+        $resolvedController = $this->getResolverInstance()->resolve($controllerString, $this->mockEntityManager());
         $this->assertInstanceOf($expected[0], $resolvedController[0]);
         $this->assertSame($expected[1], $resolvedController[1]);
     }
@@ -45,7 +46,7 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveExceptionThrown()
     {
-        $this->getResolverInstance()->resolve("UndefinedController::registerAction");
+        $this->getResolverInstance()->resolve("UndefinedController::registerAction",$this->mockEntityManager());
     }
 
     /**
@@ -53,7 +54,7 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveInvalidArgumentExceptionThrown()
     {
-        $this->getResolverInstance()->resolve(new \Stdclass());
+        $this->getResolverInstance()->resolve(new \Stdclass(),$this->mockEntityManager());
     }
 
     /**
@@ -61,7 +62,7 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveArrayArgumentExceptionThrown()
     {
-        $this->getResolverInstance()->resolve([]);
+        $this->getResolverInstance()->resolve([], $this->mockEntityManager());
     }
 
     /**
@@ -74,5 +75,16 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase
         }
 
         return $this->resolver;
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    private function mockEntityManager()
+    {
+        return $this
+            ->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }
