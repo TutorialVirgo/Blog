@@ -37,7 +37,6 @@ class RegistrationController extends Controller implements EntityManagerDependen
                 $user->setName($request->request->get('name'));
                 $user->setEmail($request->request->get('email'));
                 $user->setPassword($request->request->get('password'));
-                $user->generateSalt();
                 $user->setStatus("active");
 
                 $this->em->persist($user);

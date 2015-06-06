@@ -77,7 +77,9 @@ class User extends AbstractEntity
      */
     public function setPassword($password)
     {
-        $this->password = password_hash($password . $this->salt, PASSWORD_BCRYPT);
+        $this->generateSalt();
+
+        $this->password = password_hash($password, PASSWORD_BCRYPT, ['salt' => $this->salt]);
     }
 
     /**
@@ -88,11 +90,11 @@ class User extends AbstractEntity
         return $this->salt;
     }
 
-    public function generateSalt()
+    private function generateSalt()
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 22; $i++) {
             $randomString .= $characters[rand(0, strlen($characters) - 1)];
         }
 

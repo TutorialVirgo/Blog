@@ -51,15 +51,18 @@ class DefaultController extends Controller implements EntityManagerDependentInte
         $repository = $this->entityManager->getRepository(User::class);
         /** @var UserRepository $repository */
         $user = $repository->findByEmail($request->request->get('email'));
-        $enteredPassword = password_hash($request->request->get('password') . $user->getSalt(), PASSWORD_BCRYPT);
+
+        // $enteredPassword = password_hash($request->request->get('password') . $user->getSalt(), PASSWORD_BCRYPT);
+        $enteredPassword = password_hash($request->request->get('password'), PASSWORD_BCRYPT, ['salt' => $user->getSalt()]);
         /**@var User $user */
 
-        if ($enteredPassword === $user->getPassword()) {
-            echo ' EZAZ BAZDMEG ELTALALTAD';
+        if ($enteredPassword == $user->getPassword()) {
+            echo ' Succesful Login';
         } else {
-            echo ' NEM NYERT KOCSOG';
+            echo ' Wrong password/email combination!';
+            echo "<br>";
             print_r($enteredPassword);
-            echo PHP_EOL;
+            echo "<br>";
             print_r($user->getPassword());
         }
 
