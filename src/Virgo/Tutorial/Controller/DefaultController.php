@@ -30,12 +30,14 @@ class DefaultController extends Controller implements EntityManagerDependentInte
     public function indexAction(Request $request)
     {
         if ($request->isMethod(Request::METHOD_POST)) {
-            $errors = $this->isValid($request);
-            if (empty($errors)) {
-                return $this->renderResponse("home", ["user" => $request->request->get('name', 'Unknown')]);
+            if ($this->isValid($request)) {
+                return $this->renderResponse("home", ["user" => $request->request->get("name")]);
             }
 
-            return $this->renderResponse("index", ["user" => $request->get('name', 'World'), "errors" => $errors]);
+            return $this->renderResponse("index", [
+                "email" => $request->request->get("email"),
+                "loginErrors" => ["Invalid Password!"]
+            ]);
         }
 
         return $this->renderResponse("index", ["user" => $request->get('name', 'World')]);
@@ -47,25 +49,21 @@ class DefaultController extends Controller implements EntityManagerDependentInte
      */
     private function isValid(Request $request)
     {
-        $errors = [];
         $repository = $this->entityManager->getRepository(User::class);
         /** @var UserRepository $repository */
         $user = $repository->findByEmail($request->request->get('email'));
 
-        // $enteredPassword = password_hash($request->request->get('password') . $user->getSalt(), PASSWORD_BCRYPT);
-        $enteredPassword = password_hash($request->request->get('password'), PASSWORD_BCRYPT, ['salt' => $user->getSalt()]);
+        $enteredPassword = password_hash(
+            $request->request->get('password'),
+            PASSWORD_BCRYPT,
+            ['salt' => $user->getSalt()]
+        );
+
         /**@var User $user */
-
-        if ($enteredPassword == $user->getPassword()) {
-            echo ' Succesful Login';
+        if ($enteredPassword === $user->getPassword()) {
+            return true;
         } else {
-            echo ' Wrong password/email combination!';
-            echo "<br>";
-            print_r($enteredPassword);
-            echo "<br>";
-            print_r($user->getPassword());
+            return false;
         }
-
-        return $errors;
     }
 }

@@ -42,11 +42,19 @@ class RegistrationController extends Controller implements EntityManagerDependen
                 $this->em->persist($user);
                 $this->em->flush();
 
-                return $this->renderResponse("success", $errors);
+                //TODO : does not redirrect
+                return $this->renderResponse("index", [
+                    "notices" => ["Registration Succesful!"],
+                    "email" => $request->request->get("email")
+                ]);
             }
         }
 
-        return $this->renderResponse("registration", $errors);
+        return $this->renderResponse("registration", [
+            "userName" => $request->request->get("name"),
+            "email" => $request->request->get("email"),
+            "errors" => $errors
+        ]);
     }
 
     /**
