@@ -5,3 +5,11 @@ index:
 registration:
     path:     /registration
     defaults: { _controller: RegistrationController::registrationAction }
+
+home:
+    path:     /home
+    defaults: { _controller: DefaultController::homeAction }
+
+logout:
+    path:     /logout
+    defaults: { _controller: DefaultController::logoutAction }

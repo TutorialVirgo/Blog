@@ -2,10 +2,15 @@
 
 namespace Virgo\Tutorial\Controller;
 
+use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMInvalidArgumentException;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Virgo\Tutorial\Entity\User;
+use Virgo\Tutorial\Repository\UserRepository;
 
 class RegistrationController extends Controller implements EntityManagerDependentInterface
 {
@@ -28,6 +33,11 @@ class RegistrationController extends Controller implements EntityManagerDependen
      */
     public function registrationAction(Request $request)
     {
+        $session = $request->getSession();
+        $session->clear();
+        $session->set('userName', $request->request->get('name'));
+        $session->set('email', $request->request->get('email'));
+
         $errors = [];
         if ($request->isMethod(Request::METHOD_POST)) {
 
@@ -42,19 +52,12 @@ class RegistrationController extends Controller implements EntityManagerDependen
                 $this->em->persist($user);
                 $this->em->flush();
 
-                //TODO : does not redirrect
-                return $this->renderResponse("index", [
-                    "notices" => ["Registration Succesful!"],
-                    "email" => $request->request->get("email")
-                ]);
+                return new RedirectResponse("/");
             }
         }
 
-        return $this->renderResponse("registration", [
-            "userName" => $request->request->get("name"),
-            "email" => $request->request->get("email"),
-            "errors" => $errors
-        ]);
+        $session->set('errors', $errors);
+        return $this->renderResponse("registration", ["session" => $session]);
     }
 
     /**
@@ -73,6 +76,11 @@ class RegistrationController extends Controller implements EntityManagerDependen
         $this->checkPassword($password, $errors);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             array_push($errors, "E-mail is invalid!");
+        }
+        $repository = $this->em->getRepository(User::class);
+        /** @var UserRepository $repository */
+        if ($repository->findByEmail($request->request->get('email')) !== null) {
+            array_push($errors, "E-mail is already in use!");
         }
 
         return $errors;

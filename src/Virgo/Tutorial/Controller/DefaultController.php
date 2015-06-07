@@ -3,6 +3,7 @@
 namespace Virgo\Tutorial\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Virgo\Tutorial\Entity\User;
@@ -31,16 +32,42 @@ class DefaultController extends Controller implements EntityManagerDependentInte
     {
         if ($request->isMethod(Request::METHOD_POST)) {
             if ($this->isValid($request)) {
-                return $this->renderResponse("home", ["user" => $request->request->get("name")]);
+                return new RedirectResponse("home");
             }
 
-            return $this->renderResponse("index", [
-                "email" => $request->request->get("email"),
-                "loginErrors" => ["Invalid Password!"]
-            ]);
+            $session = $request->getSession();
+            $session->clear();
+            $session->set("loginErrors", ["Invalid Password! Try Again!"]);
+            $session->set("email", $request->request->get("email"));
+            return $this->renderResponse("index", ["session" => $session]);
         }
 
         return $this->renderResponse("index", ["user" => $request->get('name', 'World')]);
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function homeAction(Request $request)
+    {
+        //TODO : Sending the session doesn't feel right.
+        return $this->renderResponse(
+            "home",
+            ["session" => $request->getSession(), "user" => $request->get('user', 'World')]
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function logoutAction(Request $request)
+    {
+        $session = $request->getSession();
+        $session->clear();
+
+        return new RedirectResponse("/");
     }
 
     /**
@@ -52,6 +79,9 @@ class DefaultController extends Controller implements EntityManagerDependentInte
         $repository = $this->entityManager->getRepository(User::class);
         /** @var UserRepository $repository */
         $user = $repository->findByEmail($request->request->get('email'));
+        if ($user === null) {
+            return false;
+        }
 
         $enteredPassword = password_hash(
             $request->request->get('password'),
@@ -61,6 +91,9 @@ class DefaultController extends Controller implements EntityManagerDependentInte
 
         /**@var User $user */
         if ($enteredPassword === $user->getPassword()) {
+            $session = $request->getSession();
+            $session->set('userName', $user->getName());
+            $session->set('email', $user->getEmail());
             return true;
         } else {
             return false;
