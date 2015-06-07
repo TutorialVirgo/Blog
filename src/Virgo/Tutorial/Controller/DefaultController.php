@@ -37,7 +37,7 @@ class DefaultController extends Controller implements EntityManagerDependentInte
 
             $session = $request->getSession();
             $session->clear();
-            $session->set("loginErrors", ["Invalid Password! Try Again!"]);
+            $session->set("loginErrors", ["Invalid E-mail/Password combination!"]);
             $session->set("email", $request->request->get("email"));
             return $this->renderResponse("index", ["session" => $session]);
         }

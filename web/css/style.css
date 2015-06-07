@@ -1,0 +1,55 @@
+html {
+    font-family: "sans-serif";
+    background-color: #131315;
+
+    position: fixed;
+    left: 10%;
+    right: 10%;
+    top: 0;
+    bottom: 0;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #272831;
+    text-align: center;
+}
+
+div.wrapper {
+    background: -webkit-linear-gradient(#ffffff, #4cb0fe);
+    background: -o-linear-gradient(#ffffff, #4cb0fe);
+    background: -moz-linear-gradient(#ffffff, #4cb0fe);
+    background: linear-gradient(#ffffff, #4cb0fe);
+    padding-top: 5px;
+    padding-bottom: 15px;
+    height: 100%;
+    margin: auto;
+    width: 80%;
+    min-width: 400px;
+    text-align: center;
+}
+
+div.content {
+    background: -webkit-linear-gradient(#343852, #272831);
+    background: -o-linear-gradient(#343852, #272831);
+    background: -moz-linear-gradient(#343852, #272831);
+    background: linear-gradient(#343852, #272831);
+    text-align: center;
+    padding: 25px 0px 15px 0px;
+    color: #ffffff;
+}
+
+div.errors {
+    background: -webkit-linear-gradient(#c50001, #5e0003);
+    background: -o-linear-gradient(#c50001, #5e0003);
+    background: -moz-linear-gradient(#c50001, #5e0003);
+    background: linear-gradient(#c50001, #5e0003);
+    text-align: center;
+    padding: 15px 0px 15px 0px;
+    color: #ffffff;
+}
