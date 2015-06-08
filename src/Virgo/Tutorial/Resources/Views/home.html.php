@@ -26,11 +26,14 @@
 
             <p class="postContent"><?php echo $post->getContent();?></p>
 
-            <p class="postAuthor">
-                <a class="postActions" href="/edit/<?php echo $post->getId();?>">Edit</a>
-                <a class="postActions" href="/delete/<?php echo $post->getId();?>">Delete</a>
-                <?php echo $post->getEmail();?>
-            </p>
+            <p class="postAuthor"> <?php echo $post->getEmail();?></p>
+
+            <form class="postActions" method="POST" action="/edit/<?php echo $post->getId();?>">
+                <input class="postActions" type="submit" name="edit" value="Edit">
+            </form>
+            <form class="postActions" method="POST" action="/delete/<?php echo $post->getId();?>">
+                <input class="postActions" type="submit" name="delete" value="Delete">
+            </form>
         </div>
     <?php endforeach ?>
 

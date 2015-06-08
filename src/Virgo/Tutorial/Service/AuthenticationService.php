@@ -2,7 +2,14 @@
 
 namespace Virgo\Tutorial\Service;
 
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Virgo\Tutorial\Entity\User;
+use Virgo\Tutorial\Repository\UserRepository;
 
 class AuthenticationService
 {
@@ -12,27 +19,90 @@ class AuthenticationService
     private $session;
 
     /**
-     * @param Session $session
+     * @var EntityManager
      */
-    public function __construct(Session $session)
+    private $entityManager;
+
+    /**
+     * @param Session $session
+     * @param EntityManager $entityManager
+     */
+    public function __construct(Session $session, EntityManager $entityManager)
     {
         $this->session = $session;
+        $this->entityManager = $entityManager;
     }
 
-    public function authenticate()
+    /**
+     * @return null|object
+     */
+    public function retrieveUser()
     {
-        if (!isset($this->session) || $this->session->get('email') === null || $this->session->get('email') === "") : ?>
-            <link rel="stylesheet" type="text/css" href="css/style.css">
-            <div class="wrapper">
-                <h1> Error 403 - Unauthorized</h1>
+        $repository = $this->entityManager->getRepository(User::class);
+        /** @var UserRepository $repository */
 
-                <div class="errors"> You have to log in to view this content!
-                    <?php header("HTTP/1.1 403 Unauthorized"); ?>
-                    <br><br>
-                    <a href="/"> <input type="button" name="login" value="Log in"></a>
-                </div>
-            </div>
-            <?php exit;
-        endif;
+        return $repository->findByEmail($this->session->get('email'));
+    }
+
+    /**
+     * @param Session $session
+     * @return RedirectResponse
+     */
+    public function logout(Session $session)
+    {
+        $session->clear();
+
+        return new RedirectResponse("/");
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse|SessionInterface
+     */
+    public function login(Request $request)
+    {
+        if ($this->isValid($request)) {
+            return new RedirectResponse("home");
+        }
+
+        $session = $request->getSession();
+        $session->clear();
+        $session->set("loginErrors", ["Invalid E-mail/Password combination!"]);
+        $session->set("email", $request->request->get("email"));
+        $session->set('errors', []);
+
+        return $session;
+    }
+
+    /**
+     * @param Request $request
+     * @return string[]
+     */
+    private function isValid(Request $request)
+    {
+        $repository = $this->entityManager->getRepository(User::class);
+        /** @var UserRepository $repository */
+        $user = $repository->findByEmail($request->request->get('email'));
+        if ($user === null) {
+            return false;
+        }
+
+        $enteredPassword = password_hash(
+            $request->request->get('password'),
+            PASSWORD_BCRYPT,
+            ['salt' => $user->getSalt()]
+        );
+
+        /**@var User $user */
+        if ($enteredPassword === $user->getPassword()) {
+            $session = $request->getSession();
+            $session->clear();
+            $session->set('userName', $user->getName());
+            $session->set('email', $user->getEmail());
+            $session->set('userId', $user->getId());
+            return true;
+        } else {
+            return false;
+        }
     }
 }
