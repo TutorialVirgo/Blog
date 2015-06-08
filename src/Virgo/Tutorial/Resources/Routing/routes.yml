@@ -20,8 +20,8 @@ post:
 
 delete:
     path:     /delete/{id}
-    defaults: { _controller: PostController::deleteAction }
+    defaults: { _controller: PostController::deleteAction}
 
 edit:
     path:     /edit/{id}
-    defaults: { _controller: PostController::editAction }
+    defaults: { _controller: PostController::editAction}

@@ -23,4 +23,13 @@ class PostRepository extends EntityRepository
     {
         return $this->findAll();
     }
+
+    /**
+     * @param $id
+     * @return Post
+     */
+    public function findById($id)
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
 }

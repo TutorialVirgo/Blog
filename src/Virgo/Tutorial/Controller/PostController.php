@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Virgo\Tutorial\Entity\Post;
+use Virgo\Tutorial\Repository\PostRepository;
 
 class PostController extends Controller implements EntityManagerDependentInterface
 {
@@ -56,7 +57,18 @@ class PostController extends Controller implements EntityManagerDependentInterfa
         return new RedirectResponse("home");
     }
 
-    public function deleteAction(){
+    public function deleteAction(Request $request)
+    {
+        $id = array_pop(explode('/', $request->getPathInfo()));
+
+        $repository = $this->entityManager->getRepository(Post::class);
+        /** @var PostRepository $repository */
+        $post = $repository->findById($id);
+
+        $this->entityManager->remove($post);
+        $this->entityManager->flush();
+
+        return new RedirectResponse("/home");
 
     }
 
