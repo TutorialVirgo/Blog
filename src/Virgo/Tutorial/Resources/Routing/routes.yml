@@ -13,3 +13,15 @@ home:
 logout:
     path:     /logout
     defaults: { _controller: DefaultController::logoutAction }
+
+post:
+    path:     /post
+    defaults: { _controller: PostController::submitAction }
+
+delete:
+    path:     /delete/{id}
+    defaults: { _controller: PostController::deleteAction }
+
+edit:
+    path:     /edit/{id}
+    defaults: { _controller: PostController::editAction }

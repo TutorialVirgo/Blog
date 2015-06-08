@@ -1,6 +1,7 @@
 .idea
 vendor
 db.sqlite
+web/cache
 
 # netbeans szarok
 /nbproject

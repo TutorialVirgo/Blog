@@ -30,6 +30,7 @@ class ControllerFactory
         $className = 'Virgo\Tutorial\Controller\\' . $className;
 
         if (!class_exists($className)) {
+            echo $className." does not exists.";
             throw new \InvalidArgumentException;
         } else {
             if (in_array(EntityManagerDependentInterface::class, (class_implements($className)))) {

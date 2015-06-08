@@ -6,8 +6,11 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Virgo\Tutorial\Entity\Post;
 use Virgo\Tutorial\Entity\User;
+use Virgo\Tutorial\Repository\PostRepository;
 use Virgo\Tutorial\Repository\UserRepository;
+use Virgo\Tutorial\Service\AuthenticationService;
 
 class DefaultController extends Controller implements EntityManagerDependentInterface
 {
@@ -39,6 +42,7 @@ class DefaultController extends Controller implements EntityManagerDependentInte
             $session->clear();
             $session->set("loginErrors", ["Invalid E-mail/Password combination!"]);
             $session->set("email", $request->request->get("email"));
+            $session->set('errors', []);
             return $this->renderResponse("index", ["session" => $session]);
         }
 
@@ -51,10 +55,18 @@ class DefaultController extends Controller implements EntityManagerDependentInte
      */
     public function homeAction(Request $request)
     {
-        //TODO : Sending the session doesn't feel right.
+        $repository = $this->entityManager->getRepository(Post::class);
+        /** @var PostRepository $repository */
+        $posts  = $repository->findAllPosts();
+
+        (new AuthenticationService($request->getSession()))->authenticate();
+
         return $this->renderResponse(
-            "home",
-            ["session" => $request->getSession(), "user" => $request->get('user', 'World')]
+            "home", [
+                "session" => $request->getSession(),
+                "user" => $request->get('user', 'World'),
+                "posts" => $posts
+            ]
         );
     }
 
@@ -92,8 +104,10 @@ class DefaultController extends Controller implements EntityManagerDependentInte
         /**@var User $user */
         if ($enteredPassword === $user->getPassword()) {
             $session = $request->getSession();
+            $session->clear();
             $session->set('userName', $user->getName());
             $session->set('email', $user->getEmail());
+            $session->set('userId', $user->getId());
             return true;
         } else {
             return false;

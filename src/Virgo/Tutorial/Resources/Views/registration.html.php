@@ -29,7 +29,7 @@
     <?php
     if (isset($session)) {
         if (!empty($session->get("errors"))) {
-            echo '<br><div class="errors">';
+            echo '<div class="errors">';
             foreach ($session->get("errors") as $error) {
                 echo $error . '<br>';
             }
