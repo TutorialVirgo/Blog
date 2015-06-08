@@ -2,10 +2,7 @@
 
 namespace Virgo\Tutorial\Controller;
 
-use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMInvalidArgumentException;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

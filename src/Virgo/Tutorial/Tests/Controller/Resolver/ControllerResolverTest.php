@@ -4,6 +4,7 @@ namespace Virgo\Tutorial\Test\Controller\Resolver;
 
 use Doctrine\ORM\EntityManager;
 use Virgo\Tutorial\Controller\DefaultController;
+use Virgo\Tutorial\Controller\PostController;
 use Virgo\Tutorial\Controller\RegistrationController;
 use Virgo\Tutorial\Controller\Resolver\ControllerResolver;
 
@@ -37,7 +38,8 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase
         return [
             ["expected" => [DefaultController::class, "indexAction"], "controller" => "DefaultController::indexAction"],
             ["expected" => [DefaultController::class, "updateAction"], "controller" => "DefaultController::updateAction"],
-            ["expected" => [RegistrationController::class, "registerAction"], "controller" => "RegistrationController::registerAction"]
+            ["expected" => [RegistrationController::class, "registerAction"], "controller" => "RegistrationController::registerAction"],
+            ["expected" => [PostController::class, "submitAction"], "controller" => "PostController::submitAction"]
         ];
     }
 

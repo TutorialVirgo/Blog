@@ -4,12 +4,12 @@ require_once '../vendor/autoload.php';
 require_once '../bootstrap.php';
 
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Router;
 use Virgo\Tutorial\Controller\Resolver\ControllerResolver;
 use Symfony\Component\HttpFoundation\Request;
+use Virgo\Tutorial\Service\AuthenticationService;
 
 $request = Request::createFromGlobals();
 
