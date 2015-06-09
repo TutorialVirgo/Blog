@@ -13,19 +13,6 @@ use Virgo\Tutorial\Service\AuthenticationService;
 class DefaultController extends Controller implements EntityManagerDependentInterface
 {
     /**
-     * @var EntityManager
-     */
-    private $entityManager;
-
-    /**
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /**
      * @param Request $request
      * @return Response
      */

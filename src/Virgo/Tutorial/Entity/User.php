@@ -5,6 +5,7 @@ namespace Virgo\Tutorial\Entity;
 /**
  * @Table(name="user")
  * @Entity(repositoryClass="Virgo\Tutorial\Repository\UserRepository")
+ * @HasLifecycleCallbacks
  **/
 class User extends AbstractEntity
 {
@@ -31,6 +32,28 @@ class User extends AbstractEntity
      * @var string
      */
     protected $salt;
+
+    /**
+     * @var string
+     */
+    protected $plainPassword;
+
+    /**
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
 
     /**
      * @return string
@@ -83,11 +106,35 @@ class User extends AbstractEntity
     }
 
     /**
+     * @PrePersist
+     */
+    public function prePersist()
+    {
+        if (null !== $this->plainPassword) {
+            $this->setPassword($this->plainPassword);
+        }
+    }
+
+    /**
      * @return string
      */
     public function getSalt()
     {
         return $this->salt;
+    }
+
+    /**
+     * @param string $name
+     * @param string $email
+     * @param string $password
+     * @param string $status
+     */
+    public function setParamteres($name, $email, $password, $status)
+    {
+        $this->setName($name);
+        $this->setEmail($email);
+        $this->setPassword($password);
+        $this->setStatus($status);
     }
 
     private function generateSalt()
