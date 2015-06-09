@@ -12,19 +12,6 @@ use Virgo\Tutorial\Repository\PostRepository;
 class PostController extends Controller implements EntityManagerDependentInterface
 {
     /**
-     * @var EntityManager
-     */
-    private $entityManager;
-
-    /**
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /**
      * @param Request $request
      * @return Response
      */
@@ -45,16 +32,16 @@ class PostController extends Controller implements EntityManagerDependentInterfa
                 $this->entityManager->persist($post);
                 $this->entityManager->flush();
 
-                return new RedirectResponse("home");
+                return new RedirectResponse("/home");
             }
             $session->set('errors', $errors);
             $session->set('postTitle', $request->request->get('postTitle'));
             $session->set('postContent', $request->request->get('postContent'));
 
-            return new RedirectResponse("home");
+            return new RedirectResponse("/home");
         }
 
-        return new RedirectResponse("home");
+        return new RedirectResponse("/home");
     }
 
     public function deleteAction(Request $request)
@@ -69,7 +56,6 @@ class PostController extends Controller implements EntityManagerDependentInterfa
         $this->entityManager->flush();
 
         return new RedirectResponse("/home");
-
     }
 
     private function verifyPost($request)

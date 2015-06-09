@@ -7,23 +7,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Virgo\Tutorial\Entity\User;
+use Virgo\Tutorial\Form\UserType;
 use Virgo\Tutorial\Repository\UserRepository;
 
 class RegistrationController extends Controller implements EntityManagerDependentInterface
 {
-    /**
-     * @var EntityManager $em
-     */
-    private $em;
-
-    /**
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->em = $entityManager;
-    }
-
     /**
      * @param Request $request
      * @return Response
@@ -32,29 +20,44 @@ class RegistrationController extends Controller implements EntityManagerDependen
     {
         $session = $request->getSession();
         $session->clear();
-        $session->set('userName', $request->request->get('name'));
-        $session->set('email', $request->request->get('email'));
+
+        $session->set('userName', $request->request->get('user')['name']);
+        $session->set('email', $request->request->get('user')['name']);
+
+        $form = $this->formFactory->create(new UserType());
 
         $errors = [];
         if ($request->isMethod(Request::METHOD_POST)) {
-
-            $errors = $this->handleRegistration($request);
-            if (empty($errors)) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
                 $user = new User();
-                $user->setName($request->request->get('name'));
-                $user->setEmail($request->request->get('email'));
-                $user->setPassword($request->request->get('password'));
-                $user->setStatus("active");
+                $user->setParamteres(
+                    $request->request->get('user')['name'],
+                    $request->request->get('user')['email'],
+                    $request->request->get('user')['password'],
+                    "Active"
+                );
 
-                $this->em->persist($user);
-                $this->em->flush();
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
 
                 return new RedirectResponse("/");
+            } else {
+
+                echo 'Error:';
+
+                var_dump($form->getErrors()->count());
+                foreach ($errors as $error) {
+                    var_dump($error);
+                }
+
+                $session->set('errors', ['Invalid Registration!']);
+                return $this->renderResponse("registration", ["session" => $session]);
             }
         }
 
         $session->set('errors', $errors);
-        return $this->renderResponse("registration", ["session" => $session]);
+        return $this->renderResponse("registration", ["session" => $session, "form" => $form->createView()]);
     }
 
     /**
@@ -74,7 +77,7 @@ class RegistrationController extends Controller implements EntityManagerDependen
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             array_push($errors, "E-mail is invalid!");
         }
-        $repository = $this->em->getRepository(User::class);
+        $repository = $this->entityManager->getRepository(User::class);
         /** @var UserRepository $repository */
         if ($repository->findByEmail($request->request->get('email')) !== null) {
             array_push($errors, "E-mail is already in use!");

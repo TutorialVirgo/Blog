@@ -14,13 +14,16 @@
     <div class="content">
         <form method="POST">
             <label for="name">Name: </label><br>
-            <input id="name" type="text" name="name" value="<?php if (isset($session)) {
+            <input id="name" type="text" name="user[name]" value="<?php
+            if (isset($session)) {
                 echo $session->get('userName');
             } ?>"><br>
             <label for="password">Password:</label><br>
-            <input id="password" type="password" name="password"><br>
+            <input id="password" type="password" name="user[password]"><br>
+            <label for="confirm">Password again:</label><br>
+            <input id="confirm" type="password" name="user[confirm]"><br>
             <label for="email">E-mail address:</label><br>
-            <input id="email" type="text" name="email" value="<?php if (isset($session)) {
+            <input id="email" type="text" name="user[email]" value="<?php if (isset($session)) {
                 echo $session->get('email');
             } ?>"><br><br>
             <input type="submit" name="registrate" value="Send">
