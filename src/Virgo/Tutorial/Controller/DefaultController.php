@@ -2,7 +2,6 @@
 
 namespace Virgo\Tutorial\Controller;
 
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,10 +23,10 @@ class DefaultController extends Controller implements EntityManagerDependentInte
             if ($response instanceof RedirectResponse) {
                 return $response;
             }
-            return $this->renderResponse("index", ["session" => $response]);
+            echo $this->templating->render("index.html.php", ["session" => $response]);
         }
 
-        return $this->renderResponse("index", ["user" => $request->get('name', 'World')]);
+        echo $this->templating->render('index.html.php', ["user" => $request->get('name', 'World')]);
     }
 
     /**
@@ -46,13 +45,15 @@ class DefaultController extends Controller implements EntityManagerDependentInte
             return new RedirectResponse('/');
         }
 
-        return $this->renderResponse(
-            "home", [
+        echo $this->templating->render(
+            "home.html.php", [
                 "session" => $request->getSession(),
                 "user" => $request->get('user', 'World'),
                 "posts" => $posts
             ]
         );
+
+        return new Response();
     }
 
     /**

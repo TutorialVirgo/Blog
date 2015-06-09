@@ -7,12 +7,14 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Templating\Loader\FilesystemLoader;
+use Symfony\Component\Templating\PhpEngine;
+use Symfony\Component\Templating\TemplateNameParser;
 use Virgo\Tutorial\Controller\Resolver\ControllerResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Virgo\Tutorial\Service\AuthenticationService;
 
 $request = Request::createFromGlobals();
-
 $request->setSession($session);
 
 $locator = new FileLocator([dirname(__DIR__) . '/src/Virgo/Tutorial/Resources/Routing']);

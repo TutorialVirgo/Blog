@@ -26,14 +26,20 @@
 
             <p class="postContent"><?php echo $post->getContent();?></p>
 
-            <p class="postAuthor"> <?php echo $post->getEmail();?></p>
+            <p class="postAuthor">Posted by:  <?php echo $post->getEmail();?>
+                <br> Last Modified on <?php echo $post->getModifiedDate()->format('Y-m-d \a\t H:i:s');?></p>
 
-            <form class="postActions" method="POST" action="/edit/<?php echo $post->getId();?>">
-                <input class="postActions" type="submit" name="edit" value="Edit">
-            </form>
-            <form class="postActions" method="POST" action="/delete/<?php echo $post->getId();?>">
-                <input class="postActions" type="submit" name="delete" value="Delete">
-            </form>
+            <?php if ($session->get('email') === $post->getEmail()) : ?>
+                <form class="postActions" method="POST" action="/edit/<?php echo $post->getId(); ?>">
+                    <input class="postActions" type="submit" name="edit" value="Edit">
+                    <input  name="postAuthor" type="hidden" value="<?php echo $post->getEmail(); ?>">
+                </form>
+                <form class="postActions" method="POST" action="/delete/<?php echo $post->getId(); ?>">
+                    <input class="postActions" type="submit" name="delete" value="Delete">
+                    <input name="postAuthor" type="hidden"  value="<?php echo $post->getEmail(); ?>">
+                </form>
+            <?php endif; ?>
+
         </div>
     <?php endforeach ?>
 

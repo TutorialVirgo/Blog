@@ -105,4 +105,18 @@ class AuthenticationService
             return false;
         }
     }
+
+    public function userHasPermissionToEditPost($request)
+    {
+
+        $userRepository = $this->entityManager->getRepository(User::class);
+        /** @var UserRepository $userRepository */
+        $user = $userRepository->findByEmail($request->request->get('email'));
+        if ($user === null) {
+            return false;
+        }
+
+
+
+    }
 }

@@ -71,6 +71,17 @@ div.errors {
     color: #ffffff;
 }
 
+div.notices {
+    background: -webkit-linear-gradient(#c5c426, #ff7d00);
+    background: -o-linear-gradient(#c5c426, #ff7d00);
+    background: -moz-linear-gradient(#c5c426, #ff7d00);
+    background: linear-gradient(#c5c426, #ff7d00);
+    text-align: center;
+    margin-top: 10px;
+    padding: 15px 0 15px 0;
+    color: #ffffff;
+}
+
 p.postTitle {
     border-bottom: solid #252a3c 1px;
     font-size: large;
