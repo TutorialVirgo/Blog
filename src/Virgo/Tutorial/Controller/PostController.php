@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Virgo\Tutorial\Entity\Post;
 use Virgo\Tutorial\Repository\PostRepository;
+use Virgo\Tutorial\Service\AuthenticationService;
 
 class PostController extends Controller implements EntityManagerDependentInterface
 {
