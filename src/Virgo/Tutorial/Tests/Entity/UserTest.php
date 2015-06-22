@@ -27,6 +27,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame("Active", $user->getStatus());
         $this->assertTrue(strlen($user->getSalt()) === 22);
 
-        $user->setParamteres("Bar Foo","email@foobar.com","password1", "Inactive");
+        $user->setParamteres("Bar Foo", "email@foobar.com", "password1", "Inactive");
     }
 }
